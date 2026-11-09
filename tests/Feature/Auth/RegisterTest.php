@@ -6,6 +6,13 @@
     $response->assertStatus(200);
 });
 */
+beforeEach(function () {
+    $this->artisan('passport:client', [
+        '--personal' => true,
+        '--name' => 'Test Personal Access Client',
+        '--provider' => 'users',
+    ]);
+});
 
 it('creates a new account by register', function() {
     $response = $this->postJson('api/register', [
@@ -23,7 +30,6 @@ it('returns user data, no password, and a token', function () {
         'email' => 'pedro@mail.com',
         'password' => '12345678',
     ]);
-
     $response->assertStatus(201)
         ->assertJsonStructure(['token', 'user' => ['id', 'name', 'email']])
         ->assertJsonMissingPath('user.password');
