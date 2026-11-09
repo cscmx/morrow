@@ -17,7 +17,7 @@ class AuthController extends Controller
             'password' => ['required', 'min:8' ]
         ]);
         $user = User::create($validatedData);
-        $token = $user->createToken('auth')->accessToken();
+        $token = $user->createToken('auth')->accessToken;
 
         return response()
             ->json(['user' => $user,
