@@ -15,7 +15,14 @@ use Tests\TestCase;
 */
 
 pest()->extend(TestCase::class)
-  ->use(RefreshDatabase::class)
+    ->use(RefreshDatabase::class)
+    ->beforeEach(function () {
+        $this->artisan('passport:client', [
+            '--personal' => true,
+            '--name' => 'Test Personal Access Client',
+            '--provider' => 'users',
+        ]);
+    })
     ->in('Feature');
 
 /*
