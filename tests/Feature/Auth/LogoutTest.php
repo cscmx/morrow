@@ -21,3 +21,9 @@ it('logs out the user, revokes current token', function()
         ->postJson('/api/logout')
         ->assertStatus(401);
 });
+
+it('returns 401 when logging out without a token', function()
+{
+    $this->postJson('/api/logout')
+    ->assertStatus(401);
+});
