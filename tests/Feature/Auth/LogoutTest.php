@@ -12,10 +12,7 @@ it('logs out the user, revokes current token', function()
         ->assertStatus(200)
         ->assertJson(['message' => 'Logged out']);
 
-    $auth = $this->app['auth'];
-    $reflection = new \ReflectionProperty($auth, 'guards');
-    $reflection->setAccessible(true);
-    $reflection->setValue($auth, []);
+    resetAuthGuards($this->app);
 
     $this->withToken($token)
         ->postJson('/api/logout')
@@ -37,19 +34,13 @@ it('does not revoke other tokens when logging out', function () {
         ->postJson('/api/logout')
         ->assertStatus(200);
 
-    $auth = $this->app['auth'];
-    $reflection = new \ReflectionProperty($auth, 'guards');
-    $reflection->setAccessible(true);
-    $reflection->setValue($auth, []);
+    resetAuthGuards($this->app);
 
     $this->withToken($tokenA)
         ->getJson('/api/user')
         ->assertStatus(401);
 
-    $auth = $this->app['auth'];
-    $reflection = new \ReflectionProperty($auth, 'guards');
-    $reflection->setAccessible(true);
-    $reflection->setValue($auth, []);
+    resetAuthGuards($this->app);
 
     $this->withToken($tokenB)
         ->getJson('/api/user')

@@ -55,3 +55,15 @@ function something()
 {
     // ..
 }
+
+/**
+ * Clear resolved auth guards so the next request re-validates the token.
+ * Needed in tests because the AuthManager caches guards across simulated requests.
+ */
+function resetAuthGuards(\Illuminate\Foundation\Application $app): void
+{
+    $auth = $app['auth'];
+    $reflection = new \ReflectionProperty($auth, 'guards');
+    $reflection->setAccessible(true);
+    $reflection->setValue($auth, []);
+}
