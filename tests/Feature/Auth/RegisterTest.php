@@ -8,13 +8,6 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-beforeEach (function() {
-    $this->artisan('passport:client', [
-        '--personal' => true,
-        '--name' => 'Test Personal Access Client',
-        '--provider' => 'users',
-    ]);
-});
 
 it('creates a new account via register', function() {
     $response = $this->postJson('api/register', [
