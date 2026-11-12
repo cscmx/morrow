@@ -1,0 +1,284 @@
+{
+  "info": {
+    "_postman_id": "b8d3ba59-1b5e-4303-be3c-956ac6459297",
+    "name": "Morrow API",
+    "description": "# Morrow API\n\nREST API for a shared personal calendar. Users can create calendars, invite other users to share them, and manage members and appointments.\n\n## Base URL\n\nAll requests use `{{base_url}}` (set in the `Morrow local` environment).\n\n## Authentication\n\nAuthentication uses Laravel Passport. Both endpoints return a JSON object with `user` and `token`. Register or log in to get an access token, then send it in every protected request:\n\n`` Authorization: Bearer `YOUR_TOKEN` ``\n\n## Conventions\n\n- Send `Accept: application/json` and `Content-Type: application/json` in every request.\n    \n- Common status codes: `200` OK, `201` Created, `401` Unauthenticated, `403` Forbidden, `404` Not found, `409` Conflict, `422` Validation error.\n    \n\n## Status\n\nDocumented so far: `POST /api/register`, `POST /api/login`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "60061936",
+    "_collection_link": "https://go.postman.co/collection/60061936-b8d3ba59-1b5e-4303-be3c-956ac6459297?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Ana\",\n    \"email\": \"ana2@example.com\",\n    \"password\": \"password123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/register",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "register"
+          ]
+        },
+        "description": "Registers a new user and returns an access token.\n\n**Body (JSON)**\n\n| Field | Type | Required | Rules |\n| --- | --- | --- | --- |\n| name | string | yes | max 255 characters |\n| email | string | yes | valid email format, must be unique |\n| password | string | yes | minimum 8 characters |\n\n**Responses**\n\n- `201`: user created. Returns `user` and `token`.\n    \n- `422`: validation error (missing fields, invalid email, email already taken or password too short)."
+      },
+      "response": [
+        {
+          "name": "201 created",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Ana\",\n    \"email\": \"ana2@example.com\",\n    \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "register"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Nov 2026 10:11:05 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"user\": {\n    \"name\": \"Ana\",\n    \"email\": \"ana2@example.com\",\n    \"updated_at\": \"2026-11-12T10:11:05.000000Z\",\n    \"created_at\": \"2026-11-12T10:11:05.000000Z\",\n    \"id\": 2\n  },\n  \"token\": \"...\"\n}"
+        },
+        {
+          "name": "422 email already taken",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Ana\",\n    \"email\": \"ana2@example.com\",\n    \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "register"
+              ]
+            }
+          },
+          "status": "Unprocessable Content",
+          "code": 422,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Nov 2026 10:12:56 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"message\": \"The email has already been taken.\",\n  \"errors\": {\n    \"email\": [\n      \"The email has already been taken.\"\n    ]\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"ana@example.com\",\n    \"password\": \"password123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "login"
+          ]
+        },
+        "description": "Logs in an existing user and returns an access token.\n\n**Body (JSON)**\n\n| Field | Type | Required |\n| --- | --- | --- |\n| email | string | yes |\n| password | string | yes |\n\n**Responses**\n\n- `200`: returns `user` and `token`.\n    \n- `401`: invalid credentials. The message is the same whether the email does not exist or the password is wrong.\n    \n- `422`: validation error (missing or malformed fields)."
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"ana@example.com\",\n    \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "login"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Nov 2026 10:13:42 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"user\": {\n    \"id\": 1,\n    \"name\": \"Ana\",\n    \"email\": \"ana@example.com\",\n    \"email_verified_at\": null,\n    \"created_at\": \"2026-11-10T10:13:46.000000Z\",\n    \"updated_at\": \"2026-11-10T10:13:46.000000Z\"\n  },\n  \"token\": \"...\"\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}
