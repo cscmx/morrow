@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Contracts\OAuthenticatable;
-
+use Spatie\Permission\Traits\HasRoles;
 
 
 #[Fillable(['name', 'email', 'password'])]
@@ -19,7 +19,7 @@ use Laravel\Passport\Contracts\OAuthenticatable;
 class User extends Authenticatable implements OAuthenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens, HasRoles;
 
     /**
      * Get the attributes that should be cast.
