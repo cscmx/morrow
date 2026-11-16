@@ -19,6 +19,7 @@ class AuthController extends Controller
             'password' => ['required', 'min:8' ]
         ]);
         $user = User::create($validatedData);
+        $user->assignRole('user');
         $token = $user->createToken('auth')->accessToken;
 
         return response()
