@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Database\Seeders\RoleSeeder;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,7 @@ pest()->extend(TestCase::class)
             '--name' => 'Test Personal Access Client',
             '--provider' => 'users',
         ]);
+        $this->seed(RoleSeeder::class);
     })
     ->in('Feature');
 
