@@ -22,9 +22,7 @@ class AuthController extends Controller
         $user->assignRole('user');
         $token = $user->createToken('auth')->accessToken;
 
-        return response()
-            ->json(['user' => $user,
-                    'token' => $token], 201);
+        return response()->json(['user' => $user,'token' => $token], 201);
     }
 
     public function login(Request $request)

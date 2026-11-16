@@ -9,6 +9,6 @@ class UserController extends Controller
 {
     public function index()
     {
-        return responser()->json([]);
+        return response()->json([]);
     }
 }
