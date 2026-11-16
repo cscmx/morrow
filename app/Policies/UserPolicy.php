@@ -14,8 +14,12 @@ class UserPolicy
         //
     }
 
-    public function viewAny()
+    public function viewAny(User $user): bool
     {
-        
+        if ($user->hasRole('admin'))
+            {
+                return true;
+            }
+        return false;
     }
 }
