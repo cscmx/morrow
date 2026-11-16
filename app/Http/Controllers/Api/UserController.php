@@ -13,6 +13,6 @@ class UserController extends Controller
     {
         Gate::authorize('viewAny', User::class);
         
-        return response()->json([]);
+        return response()->json(User::all());
     }
 }
