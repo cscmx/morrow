@@ -61,3 +61,15 @@ it('rejects password shorter than 8 characters', function () {
         'name' => 'Pedro', 'email' => 'pedro@mail.com', 'password' => '1234567',
     ])->assertStatus(422)->assertJsonValidationErrors(['password']);
 });
+
+it('assigns the user role on register', function () {
+    $this->postJson('/api/register', [
+        'name' => 'Ana',
+        'email' => 'ana@example.com',
+        'password' => '12345678',
+    ])->assertStatus(201);
+
+    $user = User::where('email', 'ana@example.com')->first();
+
+    expect($user->hasRole('user'))->toBeTrue();
+});
