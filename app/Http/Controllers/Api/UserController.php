@@ -16,10 +16,18 @@ class UserController extends Controller
         return response()->json(User::all());
     }
 
-    public function store()
+    public function store(Request $request)
     {
         Gate::authorize('create', User::class);
         
-        return response()->json([]);
+        $validatedData = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:users'],
+            'password' => ['required', 'min:8' ]
+        ]);
+        $user = User::create($validatedData);
+        $user->assignRole('user');
+        
+        return response()->json(['user' => $user], 201);
     }
 }
