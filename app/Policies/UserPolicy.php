@@ -22,4 +22,13 @@ class UserPolicy
             }
         return false;
     }
+
+    public function create(User $user):bool
+    {
+        if($user->hasRole('admin'))
+            {
+                return true;
+            }
+        return false;
+    }
 }

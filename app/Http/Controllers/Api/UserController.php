@@ -18,6 +18,8 @@ class UserController extends Controller
 
     public function store()
     {
+        Gate::authorize('create', User::class);
+        
         return response()->json([]);
     }
 }
