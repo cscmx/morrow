@@ -15,4 +15,9 @@ class UserController extends Controller
         
         return response()->json(User::all());
     }
+
+    public function store()
+    {
+        return response()->json([]);
+    }
 }
