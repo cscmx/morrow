@@ -30,4 +30,9 @@ class UserController extends Controller
         
         return response()->json(['user' => $user], 201);
     }
+
+    public function show(User $user)
+    {
+        return response()->json($user);
+    }
 }
