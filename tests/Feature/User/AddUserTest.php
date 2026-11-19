@@ -42,3 +42,15 @@ it('returns 422 when admin creates a new user without data', function(){
     
 });
 
+it('returns 422 when admin creates a new user with an existing email', function(){
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    Passport::actingAs($admin);
+
+    User::factory()->create(['email' => 'ana@mail.com']);
+
+    $this->postJson('/api/users', [
+         'name' => 'Ana', 'email' => 'ana@mail.com', 'password' => 'password123'])
+    ->assertStatus(422)
+    ->assertJsonValidationErrors(['email']);
+});
