@@ -9,7 +9,6 @@ it('returns 401 when creating a user without a token', function () {
 
 });
 
-
 it ('returns 403 when a normal user creates a new user', function() {
     $user = User::factory()->create();
     $user->assignRole('user');
@@ -26,8 +25,20 @@ it('returns 201 when an admin creates and store a new user', function(){
     Passport::actingAs($admin);
 
     $this->postJson('/api/users', [
-        'name' => 'Ana', 'email' => 'ana@mail.com', 'password' => 'password123',
-    ])->assertStatus(201);
+        'name' => 'Ana', 'email' => 'ana@mail.com', 'password' => 'password123'])
+        ->assertStatus(201);
     $this->assertDatabaseHas('users', ['email' => 'ana@mail.com']);
 
 });
+
+it('returns 422 when admin creates a new user without data', function(){
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    Passport::actingAs($admin);
+    $this->postJson('/api/users',
+        [ ])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['name', 'email', 'password']);
+    
+});
+
