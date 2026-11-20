@@ -37,9 +37,16 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function update(User $user)
+    public function update(Request $request, User $user)
     {
         Gate::authorize('update', $user);
+        $validatedData = $request->validate([
+            'name' => ['sometimes', 'string', 'max:255'],
+            'email' => ['sometimes', 'email', 'unique:users'],
+            'password' => ['sometimes', 'min:8'],
+        ]);
+        $user->update($validatedData);
+        
         return response()->json($user);
     }
 }
