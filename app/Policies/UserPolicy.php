@@ -31,4 +31,10 @@ class UserPolicy
             }
         return false;
     }
+
+    public function view(User $user, User $model)
+    {
+        return false;
+    }
 }
+
