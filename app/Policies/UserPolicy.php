@@ -56,5 +56,11 @@ class UserPolicy
         }
         return false;
     }
+
+    public function delete(User $user, User $model):bool
+    {
+        return false;
+    }
+
 }
 
