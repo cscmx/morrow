@@ -39,3 +39,12 @@ it('returns 204 when a normal user deletes themselves', function () {
 
     $this->assertDatabaseMissing('users', ['id' => $user->id]);
 });
+
+it('return 404 when deleting a user that does not exits', function() 
+{
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    Passport::actingAs($admin);
+
+    $this->deleteJson('/api/users/9999')->assertStatus(404);
+});
