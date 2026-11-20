@@ -31,4 +31,18 @@ class UserPolicy
             }
         return false;
     }
+
+    public function view(User $user, User $model)
+    {
+        if($user->hasRole('admin'))
+            {
+                return true;
+            }
+        if($user->id === $model->id)
+            {
+                return true;
+            }
+        return false;
+    }
 }
+
