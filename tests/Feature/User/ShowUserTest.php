@@ -33,3 +33,12 @@ it('returns 200 when a normal user shows themselves', function () {
 
     $this->getJson('/api/users/'.$user->id)->assertStatus(200)->assertJsonPath('id', $user->id);
 });
+
+it('returns 404 when the user does not exist', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+
+    Passport::actingAs($admin);
+
+    $this->getJson('/api/users/9999')->assertStatus(404);
+});
