@@ -8,4 +8,12 @@ it('returns 401 when showing a user without a token', function () {
     $this->getJson('/api/users/'.$user->id)->assertStatus(401);
 });
 
+it('returns 403 when a normal user shows another user', function () {
+    $user = User::factory()->create();
+    $user->assignRole('user');
+    $other = User::factory()->create();
 
+    Passport::actingAs($user);
+
+    $this->getJson('/api/users/'.$other->id)->assertStatus(403);
+});
