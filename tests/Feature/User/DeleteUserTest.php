@@ -29,3 +29,13 @@ it('returns 204 when an admin deletes another user', function () {
 
     $this->assertDatabaseMissing('users', ['id' => $other->id]);
 });
+
+it('returns 204 when a normal user deletes themselves', function () {
+    $user = User::factory()->create();
+    $user->assignRole('user');
+    Passport::actingAs($user);
+
+    $this->deleteJson('/api/users/'.$user->id)->assertStatus(204);
+
+    $this->assertDatabaseMissing('users', ['id' => $user->id]);
+});
