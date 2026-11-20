@@ -39,6 +39,7 @@ class UserController extends Controller
 
     public function update(User $user)
     {
-        return responser()->json($user);
+        Gate::authorize('update', $user);
+        return response()->json($user);
     }
 }

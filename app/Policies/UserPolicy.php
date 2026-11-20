@@ -44,5 +44,10 @@ class UserPolicy
             }
         return false;
     }
+
+    public function update(User $user, User $model): bool
+    {
+        return false;
+    }
 }
 
