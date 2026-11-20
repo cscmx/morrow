@@ -12,8 +12,16 @@ it('returns 403 when a normal user shows another user', function () {
     $user = User::factory()->create();
     $user->assignRole('user');
     $other = User::factory()->create();
-
     Passport::actingAs($user);
 
     $this->getJson('/api/users/'.$other->id)->assertStatus(403);
+});
+
+it('returns 200 when an admin shows another user', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    $other = User::factory()->create();
+    Passport::actingAs($admin);
+
+    $this->getJson('/api/users/'.$other->id)->assertStatus(200)->assertJsonPath('id', $other->id);
 });
