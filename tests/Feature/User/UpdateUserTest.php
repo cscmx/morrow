@@ -57,3 +57,11 @@ it('returns 200 when a user updates keeping their own email', function () {
     $this->putJson('/api/users/'.$user->id, ['email' => 'same@mail.com', 'name' => 'New Name'])
         ->assertStatus(200);
 });
+
+it('returns 404 when updating a user that does not exist', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    Passport::actingAs($admin);
+
+    $this->putJson('/api/users/9999', ['name' => 'New Name'])->assertStatus(404);
+});
