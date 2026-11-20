@@ -48,3 +48,12 @@ it('returns 422 when the email belongs to another user', function () {
 
     $this->putJson('/api/users/'.$otherUser->id, ['email' => 'taken@mail.com'])->assertStatus(422)->assertJsonValidationErrors(['email']);
 });
+
+it('returns 200 when a user updates keeping their own email', function () {
+    $user = User::factory()->create(['email' => 'same@mail.com']);
+    $user->assignRole('user');
+    Passport::actingAs($user);
+
+    $this->putJson('/api/users/'.$user->id, ['email' => 'same@mail.com', 'name' => 'New Name'])
+        ->assertStatus(200);
+});
