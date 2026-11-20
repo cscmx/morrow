@@ -2,12 +2,261 @@
   "info": {
     "_postman_id": "b8d3ba59-1b5e-4303-be3c-956ac6459297",
     "name": "Morrow API",
-    "description": "# Morrow API\n\nREST API for a shared personal calendar. Users can create calendars, invite other users to share them, and manage members and appointments.\n\n## Base URL\n\nAll requests use `{{base_url}}` (set in the `Morrow local` environment).\n\n## Authentication\n\nAuthentication uses Laravel Passport. Both endpoints return a JSON object with `user` and `token`. Register or log in to get an access token, then send it in every protected request:\n\n`` Authorization: Bearer `YOUR_TOKEN` ``\n\n## Conventions\n\n- Send `Accept: application/json` and `Content-Type: application/json` in every request.\n    \n- Common status codes: `200` OK, `201` Created, `401` Unauthenticated, `403` Forbidden, `404` Not found, `409` Conflict, `422` Validation error.\n    \n\n## Status\n\nDocumented so far: `POST /api/register`, `POST /api/login`, `GET /api/users`.",
+    "description": "# Morrow API\n\nREST API for a shared personal calendar. Users can create calendars, invite other users to share them, and manage members and appointments.\n\n## Base URL\n\nAll requests use `{{base_url}}` (set in the `Morrow local` environment).\n\n## Authentication\n\nAuthentication uses Laravel Passport. Both endpoints return a JSON object with `user` and `token`. Register or log in to get an access token, then send it in every protected request:\n\n`` Authorization: Bearer `YOUR_TOKEN` ``\n\n## Conventions\n\n- Send `Accept: application/json` and `Content-Type: application/json` in every request.\n    \n- Common status codes: `200` OK, `201` Created, `401` Unauthenticated, `403` Forbidden, `404` Not found, `409` Conflict, `422` Validation error.\n    \n\n## Status\n\nDocumented so far: `POST /api/register`, `POST /api/login`, `GET /api/users`, `POST /api/users`, `GET /api/users/{id}`, `PUT /api/users/{id}`, `DELETE /api/users/{id}`.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "60061936",
     "_collection_link": "https://go.postman.co/collection/60061936-b8d3ba59-1b5e-4303-be3c-956ac6459297?source=collection_link"
   },
   "item": [
+    {
+      "name": "Delete user",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/users/5",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "5"
+          ]
+        },
+        "description": "Deletes a user. Admins can delete any user. A normal user can only delete their own account.\n\n**Authentication**\n\nRequires a Bearer token (`Authorization: Bearer YOUR_TOKEN`).\n\n**URL parameters**\n\n| Parameter | Description |\n| --- | --- |\n| id | The id of the user |\n\n**Responses**\n\n\\-`204`: user deleted. The response has no body.  \n\\-`401`: missing or invalid token.  \n\\-`403`: a normal user tried to delete another user.  \n\\-`404`: the user does not exist."
+      },
+      "response": [
+        {
+          "name": "403 forbidden",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/6",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "6"
+              ]
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 20 Nov 2026 22:45:49 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"message\": \"This action is unauthorized.\"\n}"
+        },
+        {
+          "name": "404 user does not exist",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/9999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "9999"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 20 Nov 2026 22:46:40 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\User] 9999\"\n}"
+        },
+        {
+          "name": "204 deleted",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/6",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "6"
+              ]
+            }
+          },
+          "status": "No Content",
+          "code": 204,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 20 Nov 2026 22:49:24 GMT"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "401 unauthenticated",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "5"
+              ]
+            }
+          },
+          "status": "Unauthorized",
+          "code": 401,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 20 Nov 2026 22:58:05 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"message\": \"Unauthenticated.\"\n}"
+        }
+      ]
+    },
     {
       "name": "Update user",
       "request": {
@@ -30,7 +279,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\": \"Ana\"\n}",
+          "raw": "{\n    \"name\": \"Mateo\",\n    \"email\": \"mateo@example.com\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -38,21 +287,21 @@
           }
         },
         "url": {
-          "raw": "{{base_url}}/api/users/1",
+          "raw": "{{base_url}}/api/users/4",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "api",
             "users",
-            "1"
+            "4"
           ]
         },
         "description": "Updates a user. Admins can update any user. A normal user can only update their own data. Send only the fields you want to change.\n\n**Authentication**\n\nRequires a Bearer token (`Authorization: Bearer YOUR_TOKEN`).\n\n**URL parameters**\n\n| Parameter | Description |\n| --- | --- |\n| id | The id of the user |\n\n**Body (JSON)**\n\n| Field | Type | Required | Rules |\n| --- | --- | --- | --- |\n| name | string | no | max 255 characters |\n| email | string | no | valid email format, must be unique (the user's own email is allowed) |\n| password | string | no | minimum 8 characters |\n\n**Responses**\n\n\\-`200`: user updated. Returns `user`.  \n\\-`401`: missing or invalid token.  \n\\-`403`: a normal user tried to update another user.  \n\\-`404`: the user does not exist.  \n\\-`422`: validation error (invalid email, email already taken or password too short)."
       },
       "response": [
         {
-          "name": "401 missing or invalid tokenç",
+          "name": "401 missing or invalid token",
           "originalRequest": {
             "method": "PUT",
             "header": [
@@ -119,73 +368,6 @@
           "body": "{\n  \"message\": \"Unauthenticated.\"\n}"
         },
         {
-          "name": "200 OK",
-          "originalRequest": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"name\": \"Ana updated\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/users/1",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                "1"
-              ]
-            }
-          },
-          "status": "OK",
-          "code": 200,
-          "_postman_previewlanguage": "json",
-          "header": [
-            {
-              "key": "Host",
-              "value": "127.0.0.1:8000"
-            },
-            {
-              "key": "Connection",
-              "value": "close"
-            },
-            {
-              "key": "X-Powered-By",
-              "value": "PHP/8.4.27"
-            },
-            {
-              "key": "Cache-Control",
-              "value": "no-cache, private"
-            },
-            {
-              "key": "Date",
-              "value": "Fri, 20 Nov 2026 18:31:25 GMT"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            },
-            {
-              "key": "Access-Control-Allow-Origin",
-              "value": "*"
-            }
-          ],
-          "cookie": [],
-          "body": "{\n  \"id\": 1,\n  \"name\": \"Ana updated\",\n  \"email\": \"ana@example.com\",\n  \"email_verified_at\": null,\n  \"created_at\": \"2026-11-10T10:13:46.000000Z\",\n  \"updated_at\": \"2026-11-20T17:40:03.000000Z\"\n}"
-        },
-        {
           "name": "403 unauthorized",
           "originalRequest": {
             "method": "PUT",
@@ -250,7 +432,7 @@
             }
           ],
           "cookie": [],
-          "body": "{\n  \"message\": \"This action is unauthorized.\",\n  \"exception\": \"Symfony\\\\Component\\\\HttpKernel\\\\Exception\\\\AccessDeniedHttpException\",\n  \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php\",\n  \"line\": 777,\n  \"trace\": [\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php\",\n      \"line\": 721,\n      \"function\": \"prepareException\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php\",\n      \"line\": 51,\n      \"function\": \"render\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 182,\n      \"function\": \"handleException\",\n      \"class\": \"Illuminate\\\\Routing\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php\",\n      \"line\": 52,\n      \"function\": \"{closure:Illuminate\\\\Pipeline\\\\Pipeline::prepareDestination():178}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Routing\\\\Middleware\\\\SubstituteBindings\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php\",\n      \"line\": 63,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Auth\\\\Middleware\\\\Authenticate\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 137,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 834,\n      \"function\": \"then\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 813,\n      \"function\": \"runRouteWithinStack\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 777,\n      \"function\": \"runRoute\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 766,\n      \"function\": \"dispatchToRoute\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 200,\n      \"function\": \"dispatch\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 180,\n      \"function\": \"{closure:Illuminate\\\\Foundation\\\\Http\\\\Kernel::dispatchToRouter():197}\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/mcp/src/Server/Middleware/AddAuthorizationFramingHeaders.php\",\n      \"line\": 18,\n      \"function\": \"{closure:Illuminate\\\\Pipeline\\\\Pipeline::prepareDestination():178}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Laravel\\\\Mcp\\\\Server\\\\Middleware\\\\AddAuthorizationFramingHeaders\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/mcp/src/Server/Middleware/AddWwwAuthenticateHeader.php\",\n      \"line\": 21,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Laravel\\\\Mcp\\\\Server\\\\Middleware\\\\AddWwwAuthenticateHeader\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php\",\n      \"line\": 38,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php\",\n      \"line\": 31,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TransformsRequest\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\ConvertEmptyStringsToNull\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php\",\n      \"line\": 38,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php\",\n      \"line\": 51,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TransformsRequest\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TrimStrings\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php\",\n      \"line\": 27,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\ValidatePostSize\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php\",\n      \"line\": 110,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\PreventRequestsDuringMaintenance\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php\",\n      \"line\": 74,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\HandleCors\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php\",\n      \"line\": 58,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\TrustProxies\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php\",\n      \"line\": 22,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\InvokeDeferredCallbacks\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php\",\n      \"line\": 28,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\ValidatePathEncoding\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 137,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 175,\n      \"function\": \"then\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 144,\n      \"function\": \"sendRequestThroughRouter\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Application.php\",\n      \"line\": 1228,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/public/index.php\",\n      \"line\": 20,\n      \"function\": \"handleRequest\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Application\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php\",\n      \"line\": 23,\n      \"function\": \"require_once\"\n    }\n  ]\n}"
+          "body": "{\n  \"message\": \"This action is unauthorized.\"\n}"
         },
         {
           "name": "404 user not found",
@@ -317,7 +499,7 @@
             }
           ],
           "cookie": [],
-          "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\User] 9999\",\n  \"exception\": \"Symfony\\\\Component\\\\HttpKernel\\\\Exception\\\\NotFoundHttpException\",\n  \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php\",\n  \"line\": 773,\n  \"trace\": [\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php\",\n      \"line\": 721,\n      \"function\": \"prepareException\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php\",\n      \"line\": 51,\n      \"function\": \"render\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 224,\n      \"function\": \"handleException\",\n      \"class\": \"Illuminate\\\\Routing\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php\",\n      \"line\": 63,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Auth\\\\Middleware\\\\Authenticate\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 137,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 834,\n      \"function\": \"then\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 813,\n      \"function\": \"runRouteWithinStack\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 777,\n      \"function\": \"runRoute\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 766,\n      \"function\": \"dispatchToRoute\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 200,\n      \"function\": \"dispatch\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 180,\n      \"function\": \"{closure:Illuminate\\\\Foundation\\\\Http\\\\Kernel::dispatchToRouter():197}\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/mcp/src/Server/Middleware/AddAuthorizationFramingHeaders.php\",\n      \"line\": 18,\n      \"function\": \"{closure:Illuminate\\\\Pipeline\\\\Pipeline::prepareDestination():178}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Laravel\\\\Mcp\\\\Server\\\\Middleware\\\\AddAuthorizationFramingHeaders\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/mcp/src/Server/Middleware/AddWwwAuthenticateHeader.php\",\n      \"line\": 21,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Laravel\\\\Mcp\\\\Server\\\\Middleware\\\\AddWwwAuthenticateHeader\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php\",\n      \"line\": 38,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php\",\n      \"line\": 31,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TransformsRequest\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\ConvertEmptyStringsToNull\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php\",\n      \"line\": 38,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php\",\n      \"line\": 51,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TransformsRequest\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TrimStrings\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php\",\n      \"line\": 27,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\ValidatePostSize\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php\",\n      \"line\": 110,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\PreventRequestsDuringMaintenance\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php\",\n      \"line\": 74,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\HandleCors\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php\",\n      \"line\": 58,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\TrustProxies\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php\",\n      \"line\": 22,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\InvokeDeferredCallbacks\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php\",\n      \"line\": 28,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\ValidatePathEncoding\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 137,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 175,\n      \"function\": \"then\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 144,\n      \"function\": \"sendRequestThroughRouter\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Application.php\",\n      \"line\": 1228,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/public/index.php\",\n      \"line\": 20,\n      \"function\": \"handleRequest\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Application\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php\",\n      \"line\": 23,\n      \"function\": \"require_once\"\n    }\n  ]\n}"
+          "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\User] 9999\"\n}"
         },
         {
           "name": "422 validation error",
@@ -385,6 +567,73 @@
           ],
           "cookie": [],
           "body": "{\n  \"message\": \"The email has already been taken.\",\n  \"errors\": {\n    \"email\": [\n      \"The email has already been taken.\"\n    ]\n  }\n}"
+        },
+        {
+          "name": "200 OK user",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Ana\",\n    \"email\": \"ana@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "1"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 20 Nov 2026 23:05:35 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"id\": 1,\n  \"name\": \"Ana\",\n  \"email\": \"ana@example.com\",\n  \"email_verified_at\": null,\n  \"created_at\": \"2026-11-10T10:13:46.000000Z\",\n  \"updated_at\": \"2026-11-20T18:47:20.000000Z\"\n}"
         }
       ]
     },
@@ -409,21 +658,21 @@
           }
         ],
         "url": {
-          "raw": "{{base_url}}/api/users/1",
+          "raw": "{{base_url}}/api/users/6",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "api",
             "users",
-            "1"
+            "6"
           ]
         },
         "description": "Returns a single user. Admins can see any user. A normal user can only see their own data.\n\n**Authentication**\n\nRequires a Bearer token (`Authorization: Bearer YOUR_TOKEN`).\n\n**URL parameters**\n\n| Parameter | Description |\n| --- | --- |\n| id | The id of the user |\n\n**Responses**\n\n\\-`200`: returns the user.  \n\\-`401`: missing or invalid token.  \n\\-`403`: a normal user asked for another user.  \n\\-`404`: the user does not exist."
       },
       "response": [
         {
-          "name": "401 unauthorize",
+          "name": "401 unauthenticated",
           "originalRequest": {
             "method": "GET",
             "header": [
@@ -491,7 +740,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/users/1?i",
+              "raw": "{{base_url}}/api/users/1",
               "host": [
                 "{{base_url}}"
               ],
@@ -499,13 +748,6 @@
                 "api",
                 "users",
                 "1"
-              ],
-              "query": [
-                {
-                  "key": "i",
-                  "value": null,
-                  "description": "The id of the user"
-                }
               ]
             }
           },
@@ -601,7 +843,7 @@
             }
           ],
           "cookie": [],
-          "body": "{\n  \"message\": \"This action is unauthorized.\",\n  \"exception\": \"Symfony\\\\Component\\\\HttpKernel\\\\Exception\\\\AccessDeniedHttpException\",\n  \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php\",\n  \"line\": 777,\n  \"trace\": [\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php\",\n      \"line\": 721,\n      \"function\": \"prepareException\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php\",\n      \"line\": 51,\n      \"function\": \"render\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 182,\n      \"function\": \"handleException\",\n      \"class\": \"Illuminate\\\\Routing\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php\",\n      \"line\": 52,\n      \"function\": \"{closure:Illuminate\\\\Pipeline\\\\Pipeline::prepareDestination():178}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Routing\\\\Middleware\\\\SubstituteBindings\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php\",\n      \"line\": 63,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Auth\\\\Middleware\\\\Authenticate\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 137,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 834,\n      \"function\": \"then\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 813,\n      \"function\": \"runRouteWithinStack\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 777,\n      \"function\": \"runRoute\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 766,\n      \"function\": \"dispatchToRoute\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 200,\n      \"function\": \"dispatch\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 180,\n      \"function\": \"{closure:Illuminate\\\\Foundation\\\\Http\\\\Kernel::dispatchToRouter():197}\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/mcp/src/Server/Middleware/AddAuthorizationFramingHeaders.php\",\n      \"line\": 18,\n      \"function\": \"{closure:Illuminate\\\\Pipeline\\\\Pipeline::prepareDestination():178}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Laravel\\\\Mcp\\\\Server\\\\Middleware\\\\AddAuthorizationFramingHeaders\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/mcp/src/Server/Middleware/AddWwwAuthenticateHeader.php\",\n      \"line\": 21,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Laravel\\\\Mcp\\\\Server\\\\Middleware\\\\AddWwwAuthenticateHeader\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php\",\n      \"line\": 38,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php\",\n      \"line\": 31,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TransformsRequest\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\ConvertEmptyStringsToNull\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php\",\n      \"line\": 38,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php\",\n      \"line\": 51,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TransformsRequest\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TrimStrings\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php\",\n      \"line\": 27,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\ValidatePostSize\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php\",\n      \"line\": 110,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\PreventRequestsDuringMaintenance\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php\",\n      \"line\": 74,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\HandleCors\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php\",\n      \"line\": 58,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\TrustProxies\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php\",\n      \"line\": 22,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\InvokeDeferredCallbacks\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php\",\n      \"line\": 28,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\ValidatePathEncoding\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 137,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 175,\n      \"function\": \"then\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 144,\n      \"function\": \"sendRequestThroughRouter\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Application.php\",\n      \"line\": 1228,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/public/index.php\",\n      \"line\": 20,\n      \"function\": \"handleRequest\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Application\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php\",\n      \"line\": 23,\n      \"function\": \"require_once\"\n    }\n  ]\n}"
+          "body": "{\n  \"message\": \"This action is unauthorized.\"\n}"
         },
         {
           "name": "404 user not found",
@@ -659,17 +901,48 @@
             }
           ],
           "cookie": [],
-          "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\User] 9999\",\n  \"exception\": \"Symfony\\\\Component\\\\HttpKernel\\\\Exception\\\\NotFoundHttpException\",\n  \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php\",\n  \"line\": 773,\n  \"trace\": [\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php\",\n      \"line\": 721,\n      \"function\": \"prepareException\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php\",\n      \"line\": 51,\n      \"function\": \"render\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 224,\n      \"function\": \"handleException\",\n      \"class\": \"Illuminate\\\\Routing\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php\",\n      \"line\": 63,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Auth\\\\Middleware\\\\Authenticate\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 137,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 834,\n      \"function\": \"then\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 813,\n      \"function\": \"runRouteWithinStack\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 777,\n      \"function\": \"runRoute\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 766,\n      \"function\": \"dispatchToRoute\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 200,\n      \"function\": \"dispatch\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 180,\n      \"function\": \"{closure:Illuminate\\\\Foundation\\\\Http\\\\Kernel::dispatchToRouter():197}\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/mcp/src/Server/Middleware/AddAuthorizationFramingHeaders.php\",\n      \"line\": 18,\n      \"function\": \"{closure:Illuminate\\\\Pipeline\\\\Pipeline::prepareDestination():178}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Laravel\\\\Mcp\\\\Server\\\\Middleware\\\\AddAuthorizationFramingHeaders\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/mcp/src/Server/Middleware/AddWwwAuthenticateHeader.php\",\n      \"line\": 21,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Laravel\\\\Mcp\\\\Server\\\\Middleware\\\\AddWwwAuthenticateHeader\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php\",\n      \"line\": 38,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php\",\n      \"line\": 31,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TransformsRequest\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\ConvertEmptyStringsToNull\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php\",\n      \"line\": 38,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php\",\n      \"line\": 51,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TransformsRequest\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TrimStrings\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php\",\n      \"line\": 27,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\ValidatePostSize\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php\",\n      \"line\": 110,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\PreventRequestsDuringMaintenance\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php\",\n      \"line\": 74,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\HandleCors\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php\",\n      \"line\": 58,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\TrustProxies\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php\",\n      \"line\": 22,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\InvokeDeferredCallbacks\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php\",\n      \"line\": 28,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\ValidatePathEncoding\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 137,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 175,\n      \"function\": \"then\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 144,\n      \"function\": \"sendRequestThroughRouter\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Application.php\",\n      \"line\": 1228,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/public/index.php\",\n      \"line\": 20,\n      \"function\": \"handleRequest\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Application\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php\",\n      \"line\": 23,\n      \"function\": \"require_once\"\n    }\n  ]\n}"
+          "body": "{\n  \"message\": \"No query results for model [App\\\\Models\\\\User] 9999\"\n}"
         }
       ]
     },
     {
-      "name": "Create users",
+      "name": "Create user",
       "request": {
-        "method": "GET",
-        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{   \n    \"name\": \"David\",    \n    \"email\": \"david@example.com\",    \n    \"password\": \"password123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
         "url": {
-          "raw": ""
+          "raw": "{{base_url}}/api/users",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "users"
+          ]
         },
         "description": "Creates a new user. Only available to admins. The new user gets the `user` role.\n\n**Authentication**\n\nRequires a Bearer token of an admin (`Authorization: Bearer YOUR_TOKEN`).\n\n**Body (JSON)**\n\n| Field | Type | Required | Rules |\n| --- | --- | --- | --- |\n| name | string | yes | max 255 characters |\n| email | string | yes | valid email format, must be unique |\n| password | string | yes | minimum 8 characters |\n\n**Responses**\n\n- `201`: user created. Returns `user`.\n    \n- `401`: missing or invalid token.\n    \n- `403`: the authenticated user is not an admin.\n    \n- `422`: validation error (missing fields, invalid email, email already taken or password too short)."
       },
@@ -936,7 +1209,7 @@
             }
           ],
           "cookie": [],
-          "body": "{\n  \"message\": \"This action is unauthorized.\",\n  \"exception\": \"Symfony\\\\Component\\\\HttpKernel\\\\Exception\\\\AccessDeniedHttpException\",\n  \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php\",\n  \"line\": 777,\n  \"trace\": [\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php\",\n      \"line\": 721,\n      \"function\": \"prepareException\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php\",\n      \"line\": 51,\n      \"function\": \"render\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 182,\n      \"function\": \"handleException\",\n      \"class\": \"Illuminate\\\\Routing\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php\",\n      \"line\": 52,\n      \"function\": \"{closure:Illuminate\\\\Pipeline\\\\Pipeline::prepareDestination():178}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Routing\\\\Middleware\\\\SubstituteBindings\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php\",\n      \"line\": 63,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Auth\\\\Middleware\\\\Authenticate\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 137,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 834,\n      \"function\": \"then\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 813,\n      \"function\": \"runRouteWithinStack\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 777,\n      \"function\": \"runRoute\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 766,\n      \"function\": \"dispatchToRoute\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 200,\n      \"function\": \"dispatch\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 180,\n      \"function\": \"{closure:Illuminate\\\\Foundation\\\\Http\\\\Kernel::dispatchToRouter():197}\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/mcp/src/Server/Middleware/AddAuthorizationFramingHeaders.php\",\n      \"line\": 18,\n      \"function\": \"{closure:Illuminate\\\\Pipeline\\\\Pipeline::prepareDestination():178}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Laravel\\\\Mcp\\\\Server\\\\Middleware\\\\AddAuthorizationFramingHeaders\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/mcp/src/Server/Middleware/AddWwwAuthenticateHeader.php\",\n      \"line\": 21,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Laravel\\\\Mcp\\\\Server\\\\Middleware\\\\AddWwwAuthenticateHeader\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php\",\n      \"line\": 38,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php\",\n      \"line\": 31,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TransformsRequest\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\ConvertEmptyStringsToNull\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php\",\n      \"line\": 38,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php\",\n      \"line\": 51,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TransformsRequest\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TrimStrings\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php\",\n      \"line\": 27,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\ValidatePostSize\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php\",\n      \"line\": 110,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\PreventRequestsDuringMaintenance\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php\",\n      \"line\": 74,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\HandleCors\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php\",\n      \"line\": 58,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\TrustProxies\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php\",\n      \"line\": 22,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\InvokeDeferredCallbacks\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php\",\n      \"line\": 28,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\ValidatePathEncoding\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 137,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 175,\n      \"function\": \"then\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 144,\n      \"function\": \"sendRequestThroughRouter\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Application.php\",\n      \"line\": 1228,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/public/index.php\",\n      \"line\": 20,\n      \"function\": \"handleRequest\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Application\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php\",\n      \"line\": 23,\n      \"function\": \"require_once\"\n    }\n  ]\n}"
+          "body": "{\n  \"message\": \"This action is unauthorized.\"\n}"
         }
       ]
     },
@@ -1142,7 +1415,7 @@
             }
           ],
           "cookie": [],
-          "body": "{\n  \"message\": \"This action is unauthorized.\",\n  \"exception\": \"Symfony\\\\Component\\\\HttpKernel\\\\Exception\\\\AccessDeniedHttpException\",\n  \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php\",\n  \"line\": 777,\n  \"trace\": [\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php\",\n      \"line\": 721,\n      \"function\": \"prepareException\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php\",\n      \"line\": 51,\n      \"function\": \"render\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Exceptions\\\\Handler\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 182,\n      \"function\": \"handleException\",\n      \"class\": \"Illuminate\\\\Routing\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php\",\n      \"line\": 52,\n      \"function\": \"{closure:Illuminate\\\\Pipeline\\\\Pipeline::prepareDestination():178}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Routing\\\\Middleware\\\\SubstituteBindings\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php\",\n      \"line\": 63,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Auth\\\\Middleware\\\\Authenticate\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 137,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 834,\n      \"function\": \"then\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 813,\n      \"function\": \"runRouteWithinStack\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 777,\n      \"function\": \"runRoute\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Routing/Router.php\",\n      \"line\": 766,\n      \"function\": \"dispatchToRoute\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 200,\n      \"function\": \"dispatch\",\n      \"class\": \"Illuminate\\\\Routing\\\\Router\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 180,\n      \"function\": \"{closure:Illuminate\\\\Foundation\\\\Http\\\\Kernel::dispatchToRouter():197}\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/mcp/src/Server/Middleware/AddAuthorizationFramingHeaders.php\",\n      \"line\": 18,\n      \"function\": \"{closure:Illuminate\\\\Pipeline\\\\Pipeline::prepareDestination():178}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Laravel\\\\Mcp\\\\Server\\\\Middleware\\\\AddAuthorizationFramingHeaders\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/mcp/src/Server/Middleware/AddWwwAuthenticateHeader.php\",\n      \"line\": 21,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Laravel\\\\Mcp\\\\Server\\\\Middleware\\\\AddWwwAuthenticateHeader\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php\",\n      \"line\": 38,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php\",\n      \"line\": 31,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TransformsRequest\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\ConvertEmptyStringsToNull\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php\",\n      \"line\": 38,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php\",\n      \"line\": 51,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TransformsRequest\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\TrimStrings\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php\",\n      \"line\": 27,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\ValidatePostSize\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php\",\n      \"line\": 110,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\PreventRequestsDuringMaintenance\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php\",\n      \"line\": 74,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\HandleCors\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php\",\n      \"line\": 58,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\TrustProxies\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php\",\n      \"line\": 22,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Middleware\\\\InvokeDeferredCallbacks\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php\",\n      \"line\": 28,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 219,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Http\\\\Middleware\\\\ValidatePathEncoding\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php\",\n      \"line\": 137,\n      \"function\": \"{closure:{closure:Illuminate\\\\Pipeline\\\\Pipeline::carry():194}:195}\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 175,\n      \"function\": \"then\",\n      \"class\": \"Illuminate\\\\Pipeline\\\\Pipeline\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php\",\n      \"line\": 144,\n      \"function\": \"sendRequestThroughRouter\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/Application.php\",\n      \"line\": 1228,\n      \"function\": \"handle\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Http\\\\Kernel\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/public/index.php\",\n      \"line\": 20,\n      \"function\": \"handleRequest\",\n      \"class\": \"Illuminate\\\\Foundation\\\\Application\",\n      \"type\": \"->\"\n    },\n    {\n      \"file\": \"/Users/guerrerosland/Documents/IT ACADEMY - SPRINTS/SPRINT 5/morrow/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php\",\n      \"line\": 23,\n      \"function\": \"require_once\"\n    }\n  ]\n}"
+          "body": "{\n  \"message\": \"This action is unauthorized.\"\n}"
         }
       ]
     },
