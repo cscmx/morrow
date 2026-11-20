@@ -18,3 +18,14 @@ it('returns 403 when a normal user deletes another user', function ()
 
     $this->deleteJson('/api/users/'.$other->id)->assertStatus(403);
 });
+
+it('returns 204 when an admin deletes another user', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    $other = User::factory()->create();
+    Passport::actingAs($admin);
+
+    $this->deleteJson('/api/users/'.$other->id)->assertStatus(204);
+
+    $this->assertDatabaseMissing('users', ['id' => $other->id]);
+});
