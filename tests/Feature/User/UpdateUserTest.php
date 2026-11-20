@@ -1,0 +1,67 @@
+<?php
+
+use App\Models\User;
+use Laravel\Passport\Passport;
+
+it('return 401 when updating a user without a token', function(){
+    $user = User::factory()->create();
+
+    $this->putJson('/api/users/'.$user->id, ['name' => 'new name'])->assertStatus(401);
+});
+
+
+it('returns 403 when a normal user updates another user', function () {
+    $user = User::factory()->create();
+    $user->assignRole('user');
+    $other = User::factory()->create();
+    Passport::actingAs($user);
+
+    $this->putJson('/api/users/'.$other->id, ['name' => 'New Name'])->assertStatus(403);
+});
+
+it('returns 200 when an admin updates another user', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    $other = User::factory()->create();
+    Passport::actingAs($admin);
+
+    $this->putJson('/api/users/'.$other->id, ['name' => 'New Name'])->assertStatus(200);
+    $this->assertDatabaseHas('users', ['id' => $other->id, 'name' => 'New Name']);
+});
+
+it('returns 200 when a normal user updates themselves', function () {
+    $user = User::factory()->create();
+    $user->assignRole('user');
+    Passport::actingAs($user);
+
+    $this->putJson('/api/users/' . $user->id, ['name' => 'New Name'])->assertStatus(200);
+    $this->assertDatabaseHas('users', ['id' => $user->id, 'name' => 'New Name']);
+});
+
+it('returns 422 when the email belongs to another user', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    User::factory()->create(['email' => 'taken@mail.com']);
+    $otherUser = User::factory()->create();
+
+    Passport::actingAs($admin);
+
+    $this->putJson('/api/users/'.$otherUser->id, ['email' => 'taken@mail.com'])->assertStatus(422)->assertJsonValidationErrors(['email']);
+});
+
+it('returns 200 when a user updates keeping their own email', function () {
+    $user = User::factory()->create(['email' => 'same@mail.com']);
+    $user->assignRole('user');
+    Passport::actingAs($user);
+
+    $this->putJson('/api/users/'.$user->id, ['email' => 'same@mail.com', 'name' => 'New Name'])
+        ->assertStatus(200);
+});
+
+it('returns 404 when updating a user that does not exist', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    Passport::actingAs($admin);
+
+    $this->putJson('/api/users/9999', ['name' => 'New Name'])->assertStatus(404);
+});
