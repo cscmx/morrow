@@ -17,3 +17,14 @@ it('returns 403 when a normal user updates another user', function () {
 
     $this->putJson('/api/users/'.$other->id, ['name' => 'New Name'])->assertStatus(403);
 });
+
+it('returns 200 when an admin updates another user', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    $other = User::factory()->create();
+    Passport::actingAs($admin);
+
+    $this->putJson('/api/users/'.$other->id, ['name' => 'New Name'])->assertStatus(200);
+
+    $this->assertDatabaseHas('users', ['id' => $other->id, 'name' => 'New Name']);
+});
