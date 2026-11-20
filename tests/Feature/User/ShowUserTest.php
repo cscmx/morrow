@@ -25,3 +25,11 @@ it('returns 200 when an admin shows another user', function () {
 
     $this->getJson('/api/users/'.$other->id)->assertStatus(200)->assertJsonPath('id', $other->id);
 });
+
+it('returns 200 when a normal user shows themselves', function () {
+    $user = User::factory()->create();
+    $user->assignRole('user');
+    Passport::actingAs($user);
+
+    $this->getJson('/api/users/'.$user->id)->assertStatus(200)->assertJsonPath('id', $user->id);
+});
