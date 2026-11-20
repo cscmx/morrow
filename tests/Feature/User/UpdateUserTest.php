@@ -5,7 +5,7 @@ use Laravel\Passport\Passport;
 
 it('return 401 when updating a user without a token', function(){
     $user = User::factory()->create();
-    
+
     $this->putJson('/api/users/'.$user->id, ['name' => 'new name'])->assertStatus(401);
 });
 
@@ -36,4 +36,15 @@ it('returns 200 when a normal user updates themselves', function () {
 
     $this->putJson('/api/users/' . $user->id, ['name' => 'New Name'])->assertStatus(200);
     $this->assertDatabaseHas('users', ['id' => $user->id, 'name' => 'New Name']);
+});
+
+it('returns 422 when the email belongs to another user', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+    User::factory()->create(['email' => 'taken@mail.com']);
+    $otherUser = User::factory()->create();
+
+    Passport::actingAs($admin);
+
+    $this->putJson('/api/users/'.$otherUser->id, ['email' => 'taken@mail.com'])->assertStatus(422)->assertJsonValidationErrors(['email']);
 });
