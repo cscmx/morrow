@@ -38,6 +38,10 @@ class UserPolicy
             {
                 return true;
             }
+        if($user->id === $model->id)
+            {
+                return true;
+            }
         return false;
     }
 }
