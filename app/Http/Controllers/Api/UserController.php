@@ -36,4 +36,9 @@ class UserController extends Controller
         Gate::authorize('view', $user);
         return response()->json($user);
     }
+
+    public function update(User $user)
+    {
+        return responser()->json($user);
+    }
 }
