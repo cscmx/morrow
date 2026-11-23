@@ -33,4 +33,9 @@ class User extends Authenticatable implements OAuthenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function calendars()
+    {
+        return $this->hasMany(Calendar::class);
+    }
 }
