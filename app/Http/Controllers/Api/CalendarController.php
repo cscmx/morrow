@@ -25,4 +25,9 @@ class CalendarController extends Controller
     {
         return response()->json($request->user()->calendars);
     }
+
+    public function show(Calendar $calendar)
+    {
+        return response()->json($calendar);
+    }
 }
