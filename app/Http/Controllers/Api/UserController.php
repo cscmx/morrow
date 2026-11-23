@@ -50,4 +50,12 @@ class UserController extends Controller
         
         return response()->json($user);
     }
+
+    public function destroy(User $user)
+    {
+        Gate::authorize('delete', $user);
+        $user->delete();
+        return response()->noContent();
+    }
+
 }

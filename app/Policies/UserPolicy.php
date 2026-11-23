@@ -56,5 +56,19 @@ class UserPolicy
         }
         return false;
     }
+
+    public function delete(User $user, User $model):bool
+    {
+        if ($user->hasRole('admin')) 
+            {
+                return true;
+            }
+        if ($user->id === $model->id)
+            {
+                return true;
+            }
+        return false;
+    }
+
 }
 
