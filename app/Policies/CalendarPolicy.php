@@ -21,7 +21,7 @@ class CalendarPolicy
      */
     public function view(User $user, Calendar $calendar): bool
     {
-        return false;
+        return $calendar->canAccess($user);
     }
 
     /**
