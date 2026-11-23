@@ -21,8 +21,8 @@ class CalendarController extends Controller
         return response()->json(['calendar' => $calendar], 201);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json([]);
+        return response()->json($request->user()->calendars);
     }
 }
