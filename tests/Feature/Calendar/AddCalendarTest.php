@@ -18,3 +18,10 @@ it('returns 201 when a user creates a calendar', function () {
         'user_id' => $user->id,
     ]);
 });
+
+it('returns 422 when creating a calendar without a name', function () {
+    $user = User::factory()->create();
+    Passport::actingAs($user);
+
+    $this->postJson('/api/calendars', [])->assertStatus(422)->assertJsonValidationErrors(['name']);
+});
