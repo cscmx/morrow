@@ -17,3 +17,10 @@ it('returns only the calendars of the authenticated user', function () {
 
     $this->getJson('/api/calendars')->assertStatus(200)->assertJsonCount(2);
 });
+
+it('returns an empty list when the user has no calendars', function () {
+    $user = User::factory()->create();
+    Passport::actingAs($user);
+
+    $this->getJson('/api/calendars')->assertStatus(200)->assertJsonCount(0);
+});
