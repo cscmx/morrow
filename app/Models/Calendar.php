@@ -16,4 +16,14 @@ class Calendar extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function canAccess(User $user): bool
+    {
+        if ($user->id === $this->user_id) 
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
