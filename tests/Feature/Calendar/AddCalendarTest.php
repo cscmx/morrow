@@ -11,7 +11,6 @@ it('returns 201 when a user creates a calendar', function () {
     $user = User::factory()->create();
     Passport::actingAs($user);
     $this->postJson('/api/calendars', ['name' => 'Family', 'color' => '#DC2626'])->assertStatus(201);
-
     $this->assertDatabaseHas('calendars', [
         'name' => 'Family',
         'color' => '#DC2626',
@@ -22,6 +21,12 @@ it('returns 201 when a user creates a calendar', function () {
 it('returns 422 when creating a calendar without a name', function () {
     $user = User::factory()->create();
     Passport::actingAs($user);
-
     $this->postJson('/api/calendars', [])->assertStatus(422)->assertJsonValidationErrors(['name']);
+});
+
+it('uses the default color when none is sent', function () {
+    $user = User::factory()->create();
+    Passport::actingAs($user);
+    $this->postJson('/api/calendars', ['name' => 'Work'])->assertStatus(201);
+    $this->assertDatabaseHas('calendars', ['name' => 'Work', 'color' => '#93c5fd']);
 });
