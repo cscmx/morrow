@@ -24,3 +24,10 @@ it('returns 200 when the owner shows their calendar', function () {
 
     $this->getJson('/api/calendars/'.$calendar->id)->assertStatus(200)->assertJsonPath('id', $calendar->id);
 });
+
+it('returns 404 when the calendar does not exist', function () {
+    $user = User::factory()->create();
+    Passport::actingAs($user);
+
+    $this->getJson('/api/calendars/9999')->assertStatus(404);
+});
