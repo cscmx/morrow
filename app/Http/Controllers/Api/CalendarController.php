@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Calendar;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
 class CalendarController extends Controller
 {
@@ -28,6 +29,7 @@ class CalendarController extends Controller
 
     public function show(Calendar $calendar)
     {
+        Gate::authorize('view',$calendar);
         return response()->json($calendar);
     }
 }
