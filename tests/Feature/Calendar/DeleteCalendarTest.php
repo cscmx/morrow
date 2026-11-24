@@ -10,3 +10,10 @@ it('returns 401 when deleting a calendar without a token', function ()
     $this->deleteJson('/api/calendars/'.$calendar->id)->assertStatus(401);
 });
 
+it('returns 403 when a user deletes the calendar of another user', function () {
+    $user = User::factory()->create();
+    $calendar = Calendar::factory()->create();
+    Passport::actingAs($user);
+
+    $this->deleteJson('/api/calendars/'.$calendar->id)->assertStatus(403);
+});
