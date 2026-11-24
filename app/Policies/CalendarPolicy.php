@@ -37,7 +37,7 @@ class CalendarPolicy
      */
     public function update(User $user, Calendar $calendar): bool
     {
-        return false;
+        return $calendar->canAccess($user);
     }
 
     /**
