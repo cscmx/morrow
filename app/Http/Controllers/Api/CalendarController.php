@@ -32,4 +32,9 @@ class CalendarController extends Controller
         Gate::authorize('view',$calendar);
         return response()->json($calendar);
     }
+
+    public function update(Calendar $calendar)
+    {
+        return response()->json($calendar);
+    }
 }
