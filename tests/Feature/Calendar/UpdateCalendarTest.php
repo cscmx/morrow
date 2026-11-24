@@ -31,3 +31,11 @@ it('returns 200 when the owner updates their calendar', function () {
         'color' => '#86efac',
     ]);
 });
+
+it('returns 422 when updating a calendar without a name', function () {
+    $user = User::factory()->create();
+    $calendar = Calendar::factory()->create(['user_id' => $user->id]);
+    Passport::actingAs($user);
+
+    $this->putJson('/api/calendars/'.$calendar->id, [])->assertStatus(422)->assertJsonValidationErrors(['name']);
+});
