@@ -44,4 +44,9 @@ class CalendarController extends Controller
 
         return response()->json(['calendar' => $calendar]);
     }
+
+    public function destroy(Calendar $calendar)
+    {
+        return response()->noContent();
+    }
 }
