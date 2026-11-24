@@ -44,4 +44,11 @@ class CalendarController extends Controller
 
         return response()->json(['calendar' => $calendar]);
     }
+
+    public function destroy(Calendar $calendar)
+    {
+        Gate::authorize('delete',$calendar);
+        $calendar->delete();
+        return response()->noContent();
+    }
 }
