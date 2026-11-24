@@ -17,3 +17,17 @@ it('returns 403 when a user updates the calendar of another user', function () {
 
     $this->putJson('/api/calendars/'.$calendar->id, ['name' => 'New calendar name'])->assertStatus(403);
 });
+
+it('returns 200 when the owner updates their calendar', function () {
+    $user = User::factory()->create();
+    $calendar = Calendar::factory()->create(['user_id' => $user->id]);
+    Passport::actingAs($user);
+
+    $this->putJson('/api/calendars/' . $calendar->id, ['name' => 'New calendar name', 'color' => '#86efac'])->assertStatus(200);
+
+    $this->assertDatabaseHas('calendars', [
+        'id' => $calendar->id,
+        'name' => 'New calendar name',
+        'color' => '#86efac',
+    ]);
+});
