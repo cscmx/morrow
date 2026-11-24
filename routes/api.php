@@ -24,5 +24,6 @@ Route::middleware('auth:api')->group(function()
     Route::post('/calendars', [CalendarController::class, 'store']);
     Route::get('/calendars', [CalendarController::class, 'index']);
     Route::get('/calendars/{calendar}', [CalendarController::class, 'show']);
+    Route::put('/calendars/{calendar}', [CalendarController::class, 'update']);
 });
 

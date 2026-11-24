@@ -32,4 +32,16 @@ class CalendarController extends Controller
         Gate::authorize('view',$calendar);
         return response()->json($calendar);
     }
+
+    public function update(Request $request, Calendar $calendar)
+    {
+        Gate::authorize('update',$calendar);
+        $validatedData = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'color' => ['sometimes', 'string', 'max:7'],
+        ]);
+        $calendar->update($validatedData);
+
+        return response()->json(['calendar' => $calendar]);
+    }
 }
