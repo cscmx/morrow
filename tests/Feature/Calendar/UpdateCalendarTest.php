@@ -39,3 +39,10 @@ it('returns 422 when updating a calendar without a name', function () {
 
     $this->putJson('/api/calendars/'.$calendar->id, [])->assertStatus(422)->assertJsonValidationErrors(['name']);
 });
+
+it('returns 404 when updating a calendar that does not exist', function () {
+    $user = User::factory()->create();
+    Passport::actingAs($user);
+
+    $this->putJson('/api/calendars/9999', ['name' => 'New calendar name'])->assertStatus(404);
+});
