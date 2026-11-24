@@ -27,3 +27,10 @@ it('returns 204 when the owner deletes their calendar', function () {
 
     $this->assertDatabaseMissing('calendars', ['id' => $calendar->id]);
 });
+
+it('returns 404 when deleting a calendar that does not exist', function () {
+    $user = User::factory()->create();
+    Passport::actingAs($user);
+
+    $this->deleteJson('/api/calendars/9999')->assertStatus(404);
+});
