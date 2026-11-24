@@ -47,6 +47,7 @@ class CalendarController extends Controller
 
     public function destroy(Calendar $calendar)
     {
+        Gate::authorize('delete',$calendar);
         return response()->noContent();
     }
 }
