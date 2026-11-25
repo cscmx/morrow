@@ -1,7 +1,8 @@
 <?php
 use App\Models\User;
 
-it('logs in with email and password', function() {
+it('logs in with email and password', function() 
+{
     User::factory()->create([
         'email' => 'pedro@mail.com',
         'password' => '12345678',

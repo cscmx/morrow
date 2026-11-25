@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CalendarController;
+use App\Http\Controllers\Api\MemberController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -26,5 +27,6 @@ Route::middleware('auth:api')->group(function()
     Route::get('/calendars/{calendar}', [CalendarController::class, 'show']);
     Route::put('/calendars/{calendar}', [CalendarController::class, 'update']);
     Route::delete('/calendars/{calendar}', [CalendarController::class, 'destroy']);
+    Route::post('/members', [MemberController::class, 'store']);
 });
 
