@@ -39,6 +39,6 @@ class MemberController extends Controller
         $calendar = Calendar::find($validatedData['calendar_id']);
         Gate::authorize('view', $calendar);
 
-        return response()->json([]);
+        return response()->json($calendar->members);
     }
 }
