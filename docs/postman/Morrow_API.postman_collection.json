@@ -9,6 +9,294 @@
   },
   "item": [
     {
+      "name": "List members",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/members?calendar_id=1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "members"
+          ],
+          "query": [
+            {
+              "key": "calendar_id",
+              "value": "1",
+              "description": "The id of the calendar\n"
+            }
+          ]
+        },
+        "description": "Returns the members of a calendar. The user needs access to the calendar.\n\n**Authentication**\n\nRequires a Bearer token (`Authorization: Bearer YOUR_TOKEN`).\n\n**Query parameters**\n\n| Parameter | Required | Description |\n| --- | --- | --- |\n| calendar_id | yes | The id of the calendar |\n\n**Responses**\n\n\\-`200`: returns an array of members (can be empty).  \n\\-`401`: missing or invalid token.  \n\\-`403`: the user has no access to the calendar.  \n\\-`422`: `calendar_id` is missing or the calendar does not exist."
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/members?calendar_id=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ],
+              "query": [
+                {
+                  "key": "calendar_id",
+                  "value": "1",
+                  "description": "The id of the calendar\n"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 25 Nov 2026 22:40:04 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "[\n  {\n    \"id\": 1,\n    \"calendar_id\": 1,\n    \"name\": \"Joana\",\n    \"date_of_birth\": \"2015-04-20\",\n    \"category\": \"person\",\n    \"color\": \"#8b5cf6\",\n    \"created_at\": \"2026-11-25T12:36:10.000000Z\",\n    \"updated_at\": \"2026-11-25T12:36:10.000000Z\"\n  },\n  {\n    \"id\": 2,\n    \"calendar_id\": 1,\n    \"name\": \"Joana\",\n    \"date_of_birth\": \"2015-04-20\",\n    \"category\": \"person\",\n    \"color\": \"#8b5cf6\",\n    \"created_at\": \"2026-11-25T22:39:39.000000Z\",\n    \"updated_at\": \"2026-11-25T22:39:39.000000Z\"\n  }\n]"
+        },
+        {
+          "name": "401 unauthenticated",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/members?calendar_id=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ],
+              "query": [
+                {
+                  "key": "calendar_id",
+                  "value": "1",
+                  "description": "The id of the calendar\n"
+                }
+              ]
+            }
+          },
+          "status": "Unauthorized",
+          "code": 401,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 25 Nov 2026 22:41:14 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"message\": \"Unauthenticated.\"\n}"
+        },
+        {
+          "name": "403 not allowed",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/members?calendar_id=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ],
+              "query": [
+                {
+                  "key": "calendar_id",
+                  "value": "1",
+                  "description": "The id of the calendar\n"
+                }
+              ]
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 25 Nov 2026 22:41:53 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"message\": \"This action is unauthorized.\"\n}"
+        },
+        {
+          "name": "422 calendar_id is required",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/members?calendar_id=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ],
+              "query": [
+                {
+                  "key": "calendar_id",
+                  "value": "",
+                  "description": "The id of the calendar\n"
+                }
+              ]
+            }
+          },
+          "status": "Unprocessable Content",
+          "code": 422,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 25 Nov 2026 22:43:24 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"message\": \"The calendar id field is required.\",\n  \"errors\": {\n    \"calendar_id\": [\n      \"The calendar id field is required.\"\n    ]\n  }\n}"
+        }
+      ]
+    },
+    {
       "name": "Create member",
       "request": {
         "method": "POST",
