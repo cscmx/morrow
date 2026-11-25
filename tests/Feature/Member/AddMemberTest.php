@@ -10,3 +10,11 @@ it('returns 401 when creating a member without a token', function ()
     $this->postJson('/api/members', ['calendar_id' => $calendar->id, 'name' => 'Pedro'])->assertStatus(401);
 
 });
+
+it('returns 403 when a user creates a member in the calendar of another user', function () {
+    $user = User::factory()->create();
+    $calendar = Calendar::factory()->create();
+    Passport::actingAs($user);
+
+    $this->postJson('/api/members', ['calendar_id' => $calendar->id, 'name' => 'Pedro'])->assertStatus(403);
+});

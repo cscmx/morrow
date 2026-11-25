@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CalendarController;
+use App\Http\Controllers\Api\MemberController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
