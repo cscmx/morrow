@@ -30,4 +30,9 @@ class MemberController extends Controller
 
         return response()->json(['member' => $member], 201);
     }
+
+    public function index(Request $request)
+    {
+        return response()->json([]);
+    }
 }
