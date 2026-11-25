@@ -40,3 +40,12 @@ it('returns 201 when the owner creates a member in their calendar', function ()
         'color' => '#ef4444',
     ]);
 });
+
+it('returns 422 when creating a member without data', function () 
+{
+    $user = User::factory()->create();
+    Passport::actingAs($user);
+
+    $this->postJson('/api/members', [])->assertStatus(422)->assertJsonValidationErrors(['calendar_id', 'name']);
+});
+
