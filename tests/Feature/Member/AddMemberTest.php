@@ -49,3 +49,10 @@ it('returns 422 when creating a member without data', function ()
     $this->postJson('/api/members', [])->assertStatus(422)->assertJsonValidationErrors(['calendar_id', 'name']);
 });
 
+it('returns 422 when the calendar does not exist', function () 
+{
+    $user = User::factory()->create();
+    Passport::actingAs($user);
+
+    $this->postJson('/api/members', ['calendar_id' => 9999, 'name' => 'Pedro'])->assertStatus(422)->assertJsonValidationErrors(['calendar_id']);
+});
