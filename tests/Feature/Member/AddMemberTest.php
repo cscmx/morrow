@@ -56,3 +56,13 @@ it('returns 422 when the calendar does not exist', function ()
 
     $this->postJson('/api/members', ['calendar_id' => 9999, 'name' => 'Pedro'])->assertStatus(422)->assertJsonValidationErrors(['calendar_id']);
 });
+
+it('uses the default color when none is sent', function () {
+    $user = User::factory()->create();
+    $calendar = Calendar::factory()->create(['user_id' => $user->id]);
+    Passport::actingAs($user);
+
+    $this->postJson('/api/members', ['calendar_id' => $calendar->id, 'name' => 'Pedro'])->assertStatus(201);
+
+    $this->assertDatabaseHas('members', ['name' => 'Pedro', 'color' => '#93c5fd']);
+});

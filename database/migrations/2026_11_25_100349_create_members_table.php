@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->date('date_of_birth')->nullable();
             $table->string('category')->nullable();
-            $table->string('color', 7)->default('#60a5fa');
+            $table->string('color', 7)->default('#93c5fd');
             $table->timestamps();
         });
     }
