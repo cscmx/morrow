@@ -26,4 +26,10 @@ class Calendar extends Model
 
         return false;
     }
+
+    public function members()
+    {
+        return $this->hasMany(Member::class);
+    }
+
 }
