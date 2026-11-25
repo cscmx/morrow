@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Member;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Calendar;
 
 /**
  * @extends Factory<Member>

@@ -30,4 +30,15 @@ class MemberController extends Controller
 
         return response()->json(['member' => $member], 201);
     }
+
+    public function index(Request $request)
+    {
+        $validatedData = $request->validate([
+            'calendar_id' => ['required', 'exists:calendars,id'],
+        ]);
+        $calendar = Calendar::find($validatedData['calendar_id']);
+        Gate::authorize('view', $calendar);
+
+        return response()->json($calendar->members);
+    }
 }
