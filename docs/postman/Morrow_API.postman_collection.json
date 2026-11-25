@@ -9,6 +9,304 @@
   },
   "item": [
     {
+      "name": "Create member",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"calendar_id\": 1,\n    \"name\": \"Joana\",\n    \"date_of_birth\": \"2015-04-20\",\n    \"category\": \"person\",\n    \"color\": \"#8b5cf6\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/members",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "members"
+          ]
+        },
+        "description": "Creates a new member in a calendar. Anyone with access to the calendar can add members.\n\n**Authentication**\n\nRequires a Bearer token (`Authorization: Bearer YOUR_TOKEN`).\n\n**Body (JSON)**\n\n| Field | Type | Required | Rules |\n| --- | --- | --- | --- |\n| calendar_id | integer | yes | must be an existing calendar |\n| name | string | yes | max 255 characters |\n| date_of_birth | date | no | `YYYY-MM-DD`, not in the future. Can be `null` (for example, a pet or the household) |\n| category | string | no | max 50 characters (for example `adult`, `child`, `pet` or `household`) |\n| color | string | no | max 7 characters. Default: `#3B82F6` |\n\n**Responses**\n\n\\-`201`: member created. Returns `member`.  \n\\-`401`: missing or invalid token.  \n\\-`403`: the user has no access to the calendar.  \n\\-`422`: validation error (missing fields or calendar that does not exist)."
+      },
+      "response": [
+        {
+          "name": "401 unauthenticated",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"calendar_id\": 1,\n    \"name\": \"Joana\",\n    \"date_of_birth\": \"2015-04-20\",\n    \"category\": \"person\",\n    \"color\": \"#8b5cf6\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/members",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ]
+            }
+          },
+          "status": "Unauthorized",
+          "code": 401,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 25 Nov 2026 12:33:59 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"message\": \"Unauthenticated.\"\n}"
+        },
+        {
+          "name": "201 created",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"calendar_id\": 1,\n    \"name\": \"Joana\",\n    \"date_of_birth\": \"2015-04-20\",\n    \"category\": \"person\",\n    \"color\": \"#8b5cf6\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/members",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 25 Nov 2026 12:36:10 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"member\": {\n    \"id\": 1,\n    \"calendar_id\": 1,\n    \"name\": \"Joana\",\n    \"date_of_birth\": \"2015-04-20\",\n    \"category\": \"person\",\n    \"color\": \"#8b5cf6\",\n    \"created_at\": \"2026-11-25T12:36:10.000000Z\",\n    \"updated_at\": \"2026-11-25T12:36:10.000000Z\"\n  }\n}"
+        },
+        {
+          "name": "403 unauthorized",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"calendar_id\": 1,\n    \"name\": \"Joana\",\n    \"date_of_birth\": \"2015-04-20\",\n    \"category\": \"person\",\n    \"color\": \"#8b5cf6\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/members",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ]
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 25 Nov 2026 12:38:47 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"message\": \"This action is unauthorized.\"\n}"
+        },
+        {
+          "name": "422 validation error",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"calendar_id\": 1,\n    \"date_of_birth\": \"2015-04-20\",\n    \"category\": \"person\",\n    \"color\": \"#8b5cf6\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/members",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ]
+            }
+          },
+          "status": "Unprocessable Content",
+          "code": 422,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.4.27"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 25 Nov 2026 12:41:02 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"message\": \"The name field is required.\",\n  \"errors\": {\n    \"name\": [\n      \"The name field is required.\"\n    ]\n  }\n}"
+        }
+      ]
+    },
+    {
       "name": "Delete calendar",
       "request": {
         "auth": {
