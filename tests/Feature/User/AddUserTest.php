@@ -3,13 +3,14 @@
 use App\Models\User;
 use Laravel\Passport\Passport;
 
-it('returns 401 when creating a user without a token', function () {
-   
+it('returns 401 when creating a user without a token', function () 
+{
     $this->postJson('/api/users')->assertStatus(401);
 
 });
 
-it ('returns 403 when a normal user creates a new user', function() {
+it ('returns 403 when a normal user creates a new user', function() 
+{
     $user = User::factory()->create();
     $user->assignRole('user');
 
@@ -18,7 +19,8 @@ it ('returns 403 when a normal user creates a new user', function() {
     $this->postJson('/api/users')->assertStatus(403);
 });
 
-it('returns 201 when an admin creates and store a new user', function(){
+it('returns 201 when an admin creates and store a new user', function()
+{
     $admin = User::factory()->create();
     $admin->assignRole('admin');
 
@@ -31,7 +33,8 @@ it('returns 201 when an admin creates and store a new user', function(){
 
 });
 
-it('returns 422 when admin creates a new user without data', function(){
+it('returns 422 when admin creates a new user without data', function()
+{
     $admin = User::factory()->create();
     $admin->assignRole('admin');
     Passport::actingAs($admin);
@@ -42,7 +45,8 @@ it('returns 422 when admin creates a new user without data', function(){
     
 });
 
-it('returns 422 when admin creates a new user with an existing email', function(){
+it('returns 422 when admin creates a new user with an existing email', function()
+{
     $admin = User::factory()->create();
     $admin->assignRole('admin');
     Passport::actingAs($admin);

@@ -25,7 +25,8 @@ it('returns 401 when logging out without a token', function()
     ->assertStatus(401);
 });
 
-it('does not revoke other tokens when logging out', function () {
+it('does not revoke other tokens when logging out', function () 
+{
     $user   = User::factory()->create();
     $tokenA = $user->createToken('device-a')->accessToken;
     $tokenB = $user->createToken('device-b')->accessToken;

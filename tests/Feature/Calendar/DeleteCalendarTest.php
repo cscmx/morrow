@@ -10,7 +10,8 @@ it('returns 401 when deleting a calendar without a token', function ()
     $this->deleteJson('/api/calendars/'.$calendar->id)->assertStatus(401);
 });
 
-it('returns 403 when a user deletes the calendar of another user', function () {
+it('returns 403 when a user deletes the calendar of another user', function () 
+{
     $user = User::factory()->create();
     $calendar = Calendar::factory()->create();
     Passport::actingAs($user);
@@ -18,7 +19,8 @@ it('returns 403 when a user deletes the calendar of another user', function () {
     $this->deleteJson('/api/calendars/'.$calendar->id)->assertStatus(403);
 });
 
-it('returns 204 when the owner deletes their calendar', function () {
+it('returns 204 when the owner deletes their calendar', function () 
+{
     $user = User::factory()->create();
     $calendar = Calendar::factory()->create(['user_id' => $user->id]);
     Passport::actingAs($user);
@@ -28,7 +30,8 @@ it('returns 204 when the owner deletes their calendar', function () {
     $this->assertDatabaseMissing('calendars', ['id' => $calendar->id]);
 });
 
-it('returns 404 when deleting a calendar that does not exist', function () {
+it('returns 404 when deleting a calendar that does not exist', function () 
+{
     $user = User::factory()->create();
     Passport::actingAs($user);
 
