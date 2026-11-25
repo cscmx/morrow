@@ -17,12 +17,17 @@ class MemberController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'date_of_birth' => ['nullable', 'date', 'before_or_equal:today'],
             'category' => ['nullable', 'string', 'max:50'],
-            'color' => ['sometimes', 'string', 'max:7'],
+            'color' => ['sometimes', 'string', 'regex:/^#[0-9a-fA-F]{6}$/'],
         ]);
 
         $calendar = Calendar::find($validatedData['calendar_id']);
         Gate::authorize('create', [Member::class, $calendar]);
 
-        return response()->json([]);
+        unset($validatedData['calendar_id']);
+
+        $member = $calendar->members()->create($validatedData);
+        $member->refresh();
+
+        return response()->json(['member' => $member], 201);
     }
 }
