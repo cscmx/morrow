@@ -35,3 +35,14 @@ it('returns 200 when the owner updates a member', function ()
         'color' => '#00FF00',
     ]);
 });
+
+it('returns 422 when updating a member without a name', function () {
+    $user = User::factory()->create();
+    $calendar = Calendar::factory()->create(['user_id' => $user->id]);
+    $member = Member::factory()->create(['calendar_id' => $calendar->id]);
+    Passport::actingAs($user);
+
+    $this->putJson('/api/members/'.$member->id, [])
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['name']);
+});
