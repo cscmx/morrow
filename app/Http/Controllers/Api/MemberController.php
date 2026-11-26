@@ -44,6 +44,7 @@ class MemberController extends Controller
 
     public function update(Request $request, Member $member)
     {
+        Gate::authorize('update', $member);
         return response()->json([$member]);
     }
 }
