@@ -46,7 +46,7 @@ class MemberController extends Controller
     {
 
         Gate::authorize('update', $member);
-            $validatedData = $request->validate([
+        $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'date_of_birth' => ['nullable', 'date', 'before_or_equal:today'],
             'category' => ['nullable', 'string', 'max:50'],
@@ -58,6 +58,7 @@ class MemberController extends Controller
 
     public function destroy(Member $member)
     {
+        Gate::authorize('delete', $member);
         $member->delete();
         return response()->noContent();
     }
