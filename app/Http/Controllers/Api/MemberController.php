@@ -55,4 +55,10 @@ class MemberController extends Controller
         $member->update($validatedData);
         return response()->json(['member' => $member]);
     }
+
+    public function destroy(Member $member)
+    {
+        $member->delete();
+        return response()->noContent();
+    }
 }

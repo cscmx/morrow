@@ -30,5 +30,6 @@ Route::middleware('auth:api')->group(function()
     Route::post('/members', [MemberController::class, 'store']);
     Route::get('/members', [MemberController::class, 'index']);
     Route::put('/members/{member}', [MemberController::class, 'update']);
+    Route::delete('/members/{member}', [MemberController::class, 'destroy']);
 });
 
