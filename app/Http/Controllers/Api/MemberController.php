@@ -41,4 +41,9 @@ class MemberController extends Controller
 
         return response()->json($calendar->members);
     }
+
+    public function update(Request $request, Member $member)
+    {
+        return response()->json([$member]);
+    }
 }
