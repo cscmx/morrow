@@ -46,3 +46,10 @@ it('returns 422 when updating a member without a name', function () {
         ->assertStatus(422)
         ->assertJsonValidationErrors(['name']);
 });
+
+it('returns 404 when updating a member that does not exist', function () {
+    $user = User::factory()->create();
+    Passport::actingAs($user);
+
+    $this->putJson('/api/members/9999', ['name' => 'New member name'])->assertStatus(404);
+});
