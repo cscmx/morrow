@@ -41,4 +41,18 @@ class MemberController extends Controller
 
         return response()->json($calendar->members);
     }
+
+    public function update(Request $request, Member $member)
+    {
+
+        Gate::authorize('update', $member);
+            $validatedData = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'date_of_birth' => ['nullable', 'date', 'before_or_equal:today'],
+            'category' => ['nullable', 'string', 'max:50'],
+            'color' => ['sometimes', 'string', 'max:7', 'regex:/^#[0-9a-fA-F]{6}$/'],
+        ]);
+        $member->update($validatedData);
+        return response()->json(['member' => $member]);
+    }
 }

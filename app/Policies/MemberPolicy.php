@@ -38,7 +38,7 @@ class MemberPolicy
      */
     public function update(User $user, Member $member): bool
     {
-        return false;
+        return $member->calendar->canAccess($user);
     }
 
     /**
