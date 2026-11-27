@@ -5,12 +5,12 @@ it('logs in with email and password', function()
 {
     User::factory()->create([
         'email' => 'pedro@mail.com',
-        'password' => '12345678',
+        'password' => 'Password123',
     ]);
 
     $this->postJson('/api/login', [
         'email' => 'pedro@mail.com',
-        'password' => '12345678',
+        'password' => 'Password123',
     ])
     ->assertStatus(200)
     ->assertJsonStructure(['token', 'user' => ['id','name','email']])
@@ -32,7 +32,7 @@ it('rejects an email that does not exist', function ()
 {    
 	$this->postJson('/api/login', [        
 		'email' => 'nobody@mail.com',       
-        'password' => '12345678',    ])        
+        'password' => 'Password123',    ])        
 	->assertStatus(401)       
 	->assertJson(['message' => 'Invalid credentials.']);
 });

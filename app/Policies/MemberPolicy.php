@@ -46,7 +46,7 @@ class MemberPolicy
      */
     public function delete(User $user, Member $member): bool
     {
-        return false;
+        return $member->calendar->canAccess($user);
     }
 
     /**

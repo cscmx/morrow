@@ -22,7 +22,6 @@ class MemberController extends Controller
 
         $calendar = Calendar::find($validatedData['calendar_id']);
         Gate::authorize('create', [Member::class, $calendar]);
-
         unset($validatedData['calendar_id']);
 
         $member = $calendar->members()->create($validatedData);
@@ -44,9 +43,8 @@ class MemberController extends Controller
 
     public function update(Request $request, Member $member)
     {
-
         Gate::authorize('update', $member);
-            $validatedData = $request->validate([
+        $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'date_of_birth' => ['nullable', 'date', 'before_or_equal:today'],
             'category' => ['nullable', 'string', 'max:50'],
@@ -54,5 +52,12 @@ class MemberController extends Controller
         ]);
         $member->update($validatedData);
         return response()->json(['member' => $member]);
+    }
+
+    public function destroy(Member $member)
+    {
+        Gate::authorize('delete', $member);
+        $member->delete();
+        return response()->noContent();
     }
 }
